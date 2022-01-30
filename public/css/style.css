@@ -1,0 +1,214 @@
+/**
+* Template Name: Avilon - v4.6.1
+* Template URL: https://bootstrapmade.com/avilon-bootstrap-landing-page-template/
+* Author: BootstrapMade.com
+* License: https://bootstrapmade.com/license/
+*/
+
+/*--------------------------------------------------------------
+# General
+--------------------------------------------------------------*/
+body {
+  background: #fff;
+  color: #666666;
+  font-family: "Open Sans", sans-serif;
+  overflow-x: hidden;
+}
+
+a {
+  color: #1dc8cd;
+  text-decoration: none;
+  transition: 0.5s;
+}
+
+a:hover,
+a:active,
+a:focus {
+  color: #1dc9ce;
+  outline: none;
+  text-decoration: none;
+}
+
+p {
+  padding: 0;
+  margin: 0 0 30px 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  margin: 0 0 20px 0;
+  padding: 0;
+}
+
+/*--------------------------------------------------------------
+  # Header
+  --------------------------------------------------------------*/
+#header {
+  height: 90px;
+  transition: all 0.5s;
+  z-index: 997;
+  background: linear-gradient(45deg, #1de099, #1dc8cd);
+}
+#header.header-transparent {
+  background: transparent;
+}
+#header.header-scrolled {
+  background: linear-gradient(45deg, #1de099, #1dc8cd);
+  height: 70px;
+  transition: all 0.5s;
+}
+#header #logo h1 {
+  font-size: 36px;
+  padding: 0;
+  margin: 0;
+  display: inline-block;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 300;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+#header #logo h1 a,
+#header #logo h1 a:hover {
+  color: #fff;
+}
+@media (max-width: 768px) {
+  #header #logo h1 {
+    font-size: 28px;
+  }
+  #header #logo img {
+    max-height: 40px;
+  }
+}
+
+/*--------------------------------------------------------------
+  # Hero Section
+  --------------------------------------------------------------*/
+#hero, #canvas-section {
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(
+      45deg,
+      rgba(29, 224, 153, 0.8),
+      rgba(29, 200, 205, 0.8)
+    ),
+    url("../img/hero-bg.jpg") center top no-repeat;
+  background-size: cover;
+  position: relative;
+}
+@media (min-width: 1025px) {
+  #hero {
+    background-attachment: fixed;
+  }
+}
+@media (max-height: 640px) {
+  #hero {
+    height: 120vh;
+  }
+}
+#hero .hero-text, #canvas-section #image_canvas {
+  position: absolute;
+  left: 0;
+  top: 100px;
+  right: 0;
+  height: calc(50% - 60px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+}
+
+#image_canvas{
+  width: 1000px !important;
+  height: 1000px !important;
+  margin: auto;
+}
+
+#hero h2 {
+  margin: 30px 0 10px 0;
+  padding: 0 15px;
+  font-size: 48px;
+  font-weight: 400;
+  line-height: 56px;
+  color: #fff;
+}
+@media (max-width: 768px) {
+  #hero h2 {
+    font-size: 28px;
+    line-height: 36px;
+  }
+}
+#hero p {
+  color: #fff;
+  margin-bottom: 20px;
+  padding: 0 15px;
+  font-size: 24px;
+}
+@media (max-width: 768px) {
+  #hero p {
+    font-size: 18px;
+    line-height: 24px;
+    margin-bottom: 20px;
+  }
+}
+#hero .btn-get-started {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: 1px;
+  display: inline-block;
+  padding: 8px 28px;
+  border-radius: 50px;
+  transition: 0.5s;
+  margin: 10px;
+  border: 2px solid #fff;
+  color: #fff;
+}
+#hero .btn-get-started:hover {
+  color: #1dc8cd;
+  background: #fff;
+}
+
+/* #hero img {
+  position: absolute;
+  display: block;
+  width: 500px;
+  height: 250px;
+  z-index: 1000;
+} */
+
+#canvas-section{
+
+}
+
+@-webkit-keyframes animate-loading {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes animate-loading {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.custom-file-upload {
+  border: 1px solid #ccc;
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <link href="css/style.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script>
+        $('#file-upload').change(function() {
+          var i = $(this).prev('label').clone();
+          var file = $('#file-upload')[0].files[0].name;
+          $(this).prev('label').text(file);
+        });
+    </script>
+</head>
+<body>
+    <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top d-flex align-items-center header-transparent">
+    <div class="container d-flex justify-content-between align-items-center">
+
+      <div id="logo">
+        <h1><a href="http://localhost:3000/">Blockify</a></h1>
+      </div>
+
+    </div>
+  </header><!-- End Header -->
+
+  <!-- ======= Canvas Section ======= -->
+  <section id="canvas-section">
+    {{!-- <img src="{{fileName}}" /> --}}
+    <canvas id="image_canvas" width="1000" height="1000"></canvas>
+  </section><!-- End Canvas Section -->  
+
+
+  <script>
+    document.addEventListener('mousedown', function (event) {
+      if (event.detail > 1) {
+        event.preventDefault();
+      }
+    }, false);
+
+    var bboxes = JSON.parse("{{ bbox_str }}".replace(/&quot;/g,'"'));
+    var c = document.getElementById("image_canvas");
+    var ctx = c.getContext("2d");
+    var img = new Image();
+    img.onload = function() {
+        ctx.drawImage(img, 0, 0);
+        bboxes.forEach(bbox => {
+            ctx.fillRect(bbox[0].x, bbox[0].y, bbox[2].x - bbox[0].x, bbox[2].y - bbox[0].y);
+            bbox.transparent = false;
+        })
+        c.addEventListener("click", updateCanvas, false);                
+    };
+    img.src = "{{fileName}}";
+
+    function updateCanvas(event) {
+        var rect = c.getBoundingClientRect();
+        let mouseX = event.clientX - rect.left;
+        let mouseY = event.clientY - rect.top;
+
+        ctx.drawImage(img, 0, 0);
+        bboxes.forEach(bbox => {
+            if ((bbox[0].x <= mouseX) && (bbox[2].x >= mouseX) && (bbox[0].y <= mouseY) && (bbox[2].y >= mouseY)) {
+                if (bbox.transparent) {
+                    ctx.fillRect(bbox[0].x, bbox[0].y, bbox[2].x - bbox[0].x, bbox[2].y - bbox[0].y);
+                    bbox.transparent = false;                          
+                }
+                else {
+                    bbox.transparent = true;
+                }
+            }
+            else {
+                if (!bbox.transparent) {                   
+                    ctx.fillRect(bbox[0].x, bbox[0].y, bbox[2].x - bbox[0].x, bbox[2].y - bbox[0].y);
+                }
+            }
+        })
+    }
+  </script>
+</body>
+</html>
