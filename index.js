@@ -1,5 +1,7 @@
-const vision = require('@google-cloud/vision');
+//const vision = require('@google-cloud/vision');
+const tesseract = require('tesseract.js');
 const { rejects } = require('assert');
+var HTMLParser = require('node-html-parser');
 const fs = require('fs')
 
 const express = require("express")
@@ -9,7 +11,7 @@ const hbs = require('hbs');
 const multer  = require('multer')
 
 // Creates a client
-const client = new vision.ImageAnnotatorClient();
+//const client = new vision.ImageAnnotatorClient();
 
 /**
  * TODO(developer): Uncomment the following line before running the sample.
@@ -17,6 +19,7 @@ const client = new vision.ImageAnnotatorClient();
 
 // Performs text detection on the local file
 
+/*
 async function getbboxes(fileName) {
     let bboxes = [];
     const [result] = await client.textDetection("public/" + fileName);
@@ -25,6 +28,45 @@ async function getbboxes(fileName) {
     bboxes.shift();
     return bboxes;
 }
+*/
+
+async function getbboxes(fileName) {
+    let obj = await tesseract.recognize(
+        fileName,
+        'eng'
+      );
+    
+    let root = HTMLParser.parse(obj["data"]["hocr"]);
+
+    bboxes = [];
+    for (let span of root.querySelectorAll("span[class='ocrx_word']")) {
+
+      let text = span["_rawAttrs"]["title"].split(" ");
+      text[4] = text[4].slice(0, -1);
+
+      bboxes.push([
+          {
+            "x": text[1],
+            "y": text[2]
+          },
+          {
+            "x": text[3],
+            "y": text[2]
+          },
+          {
+            "x": text[3],
+            "y": text[4]
+          },
+          {
+            "x": text[1],
+            "y": text[4]
+          }
+        ])
+    }
+
+    return bboxes;
+}
+
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -51,8 +93,7 @@ app.post("/", upload.single('upload_image'), async (req, res) => {
     var reqContent = req.file
     var fileName = reqContent.filename
     var file = 'uploads/' + fileName
-    console.log(file);
-    let bboxes = await getbboxes(file);
+    let bboxes = await getbboxes("public/" + file);
     res.render("solution", {fileName: file, bbox_str: JSON.stringify(bboxes)});
 })
 
